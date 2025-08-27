@@ -6,25 +6,33 @@ public class GetGroceries {
 
     public static void main(String[] args) {
         String[][] products = {
-                {"C","D"},
-                {"Ca","P"},
-                {"Po","P"},
-                {"CT","Pa"},
-                {"RL","P"},
-                {"CM","D"},
-                {"IL","P"},
-                {"Co","Pa"},
-                {"Pas","Pa"},
-                {"M","D"},
-                {"BB","P"},
-                {"F","Pa"}
+                {"Cheese","Dairy"},
+                {"Carrots","Produce"},
+                {"Potatoes","Produce"},
+                {"Canned Tuna","Pantry"},
+                {"Romaine Lettuce","Produce"},
+                {"Chocolate Milk","Dairy"},
+                {"Flour","Pantry"},
+                {"Iceberg Lettuce","Produce"},
+                {"Coffee","Pantry"},
+                {"Pasta","Pantry"},
+                {"Milk","Dairy"},
+                {"Blueberries","Produce"},
+                {"Pasta Sauce","Pantry"}
         };
 
-        String[] list1 = {"C","Po","Pas","CM","Co"};
-        String[] list2 = {"Ca","Po","RL","IL","BB"};
+        String[] list1 = {"Blueberries","Milk","Coffee","Flour","Cheese","Carrots"};
+        String[] list2 = {"Blueberries","Carrots","Coffee","Milk","Flour","Cheese"};
+        String[] list3 = {"Blueberries","Carrots","Romaine Lettuce","Iceberg Lettuce"};
+        String[] list4 = {"Milk","Flour","Chocolate Milk","Pasta Sauce"};
+        String[] list5 = {"Cheese","Potatoes","Blueberries","Canned Tuna"};
+
 
         System.out.println(shopping(products,list1));
         System.out.println(shopping(products,list2));
+        System.out.println(shopping(products,list3));
+        System.out.println(shopping(products,list4));
+        System.out.println(shopping(products,list5));
     }
 
     public static int shopping(String[][] products, String[] list){
