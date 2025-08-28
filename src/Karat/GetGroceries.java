@@ -57,4 +57,38 @@ public class GetGroceries {
 
         return seqCount-effCount;
     }
+
+//    public static int shopping(String[][] products, String[] list){
+//
+//        int deptCount = 0;
+//
+//        Map<String, String> productDeptMap = new HashMap<String, String>();
+//
+//        for(String[] deptProd: products){
+//            String product = deptProd[0];
+//            String dept = deptProd[1];
+//            productDeptMap.put(product,dept);
+//        }
+//
+//        int seqDeptCount = 0;
+//        int uniqueDeptCount = 0;
+//        Set<String> deptSet = new HashSet<String>();
+//        String prevDept = "";
+//
+//        for(String product: list){
+//            String dept = productDeptMap.get(product);
+//            if(!deptSet.contains(dept)){
+//                deptSet.add(dept);
+//            }
+//            if(prevDept == dept){
+//                continue;
+//            }else {
+//                prevDept = dept;
+//                seqDeptCount++;
+//            }
+//        }
+//        uniqueDeptCount = deptSet.size();
+//
+//        return seqDeptCount - uniqueDeptCount ;
+//    }
 }
