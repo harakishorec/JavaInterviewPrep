@@ -8,78 +8,61 @@ public class GroupingByNumberOfConnections {
     public static void main(String[] args) {
 
         String[][] events = {
-                {"Connect","A","B"},
-                {"Connect","V","B"},
-                {"Connect","D","B"},
-                {"Connect","A","D"},
-                {"Connect","A","C"},
-                {"Connect","A","L"},
-                {"Connect","K","B"},
-                {"Disconnect","A","B"},
-                {"Disconnect","D","B"},
-                {"Connect","A","B"}
+                {"Connect","Alice","Bob"},
+                {"Disconnect","Bob","Alice"},
+                {"Connect","Alice","Charlie"},
+                {"Connect","Dennis","Bob"},
+                {"Connect","Pam","Dennis"},
+                {"Disconnect","Pam","Dennis"},
+                {"Connect","Pam","Dennis"},
+                {"Connect","Edward","Bob"},
+                {"Connect","Dennis","Charlie"},
+                {"Connect","Alice","Nicole"},
+                {"Connect","Pam","Edward"},
+                {"Disconnect","Dennis","Charlie"},
+                {"Connect","Dennis","Edward"},
+                {"Connect","Charlie","Bob"}
 
 
         };
 
-        System.out.println(getConnectionGroups(events, 2));
+        System.out.println(getConnectionGroups(events, 3));
+        System.out.println(getConnectionGroups(events, 1));
+        System.out.println(getConnectionGroups(events, 10));
 
     }
 
-    public static List<List<String>> getConnectionGroups(String[][] events, int n){
-        if(null == events) return null;
-        List<String> peopleWithMoreThanNConnectionList = new ArrayList<String>();
-        List<String> peopleWithLessThanNConnectionsList = new ArrayList<String>();
-        Map<String, List<String>> connectionDetailsMap = new HashMap<String, List<String>>();
-        for(String[] s: events){
-            if(s[0].equalsIgnoreCase("Connect")){
-                addConnection(connectionDetailsMap,s[1],s[2]);
+    public static Map<String, Set<String>> getConnectionGroups(String[][] events, int n){
+
+        Map<String, Set<String>> finalUserConnectionMap= new HashMap<>();
+        Map<String, Integer> userConnectionMap= new HashMap<>();
+        Set<String> connectionsLessThanN = new HashSet<>();
+        Set<String> connectionsEqOrMoreThanN = new HashSet<>();
+
+        for(String[] event: events){
+            String action = event[0];
+            String user1 = event[1];
+            String user2 = event[2];
+
+            if(action.equalsIgnoreCase("Connect")){
+                userConnectionMap.put(user1,userConnectionMap.getOrDefault(user1,0)+1);
+                userConnectionMap.put(user2,userConnectionMap.getOrDefault(user2,0)+1);
             }else{
-                deleteConnection(connectionDetailsMap,s[1],s[2]);
+                userConnectionMap.put(user1,userConnectionMap.getOrDefault(user1,0)-1);
+                userConnectionMap.put(user2,userConnectionMap.getOrDefault(user2,0)-1);
             }
         }
 
-        for(String per: connectionDetailsMap.keySet() ){
-            List<String> connections = connectionDetailsMap.get(per);
-            if(connections.size() < n){
-                peopleWithLessThanNConnectionsList.add(per);
-            } else{
-                peopleWithMoreThanNConnectionList.add(per);
+        for(Map.Entry<String,Integer> usersEntry: userConnectionMap.entrySet()){
+            if(usersEntry.getValue() < n){
+                connectionsLessThanN.add(usersEntry.getKey());
+            }else{
+                connectionsEqOrMoreThanN.add(usersEntry.getKey());
             }
         }
 
-        List<List<String>> result = new ArrayList<List<String>>();
-        result.add(peopleWithLessThanNConnectionsList);
-        result.add(peopleWithMoreThanNConnectionList);
-        return result;
-    }
-
-    private static void deleteConnection(Map<String, List<String>> connectionDetailsMap, String s, String s1) {
-        if(!connectionDetailsMap.containsKey(s) || !connectionDetailsMap.containsKey(s1)){
-            return;
-        }
-        List<String> con = connectionDetailsMap.get(s);
-        con.remove(s1);
-        connectionDetailsMap.put(s,con);
-        con = connectionDetailsMap.get(s1);
-        con.remove(s);
-        connectionDetailsMap.put(s1,con);
-    }
-
-    private static void addConnection(Map<String, List<String>> connectionDetailsMap, String s, String s1) {
-        if(!connectionDetailsMap.containsKey(s)){
-            connectionDetailsMap.put(s,new ArrayList<String>());
-        }
-
-        if(!connectionDetailsMap.containsKey(s1)){
-            connectionDetailsMap.put(s1,new ArrayList<String>());
-        }
-        List<String> con1 = connectionDetailsMap.get(s);
-        con1.add(s1);
-        connectionDetailsMap.put(s,con1);
-
-        List<String> con2 = connectionDetailsMap.get(s1);
-        con2.add(s);
-        connectionDetailsMap.put(s1,con2);
+        finalUserConnectionMap.put("Connection Less than " + n,connectionsLessThanN);
+        finalUserConnectionMap.put("Connection Eq or More than " + n,connectionsEqOrMoreThanN);
+        return finalUserConnectionMap;
     }
 }
